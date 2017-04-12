@@ -1,12 +1,13 @@
 # CATLicious
 
+![CATLicious Logo](https://i.imgur.com/mWsOQaz.png)
+
     λ Title:	CATLicious
-    λ Author:	Simone Hierhold
+    λ Author:   Simone Hierhold
                 Benjamin Krenn
                 Thomas Spitzer
     λ GitLab:	https://hierhold14@git-iit.fh-joanneum.at/spitzert14/MobAppDev_Android_App.git
 
-![CATLicious Logo](https://i.imgur.com/mWsOQaz.png)
 #1. Introduction
 
 	This project has been created for the course "Mobile App Development" at the FH Joanneum.
@@ -22,4 +23,4 @@
 #2. Installation
 
     Clone the repository by running:
-    `$ git clone https://hierhold14@git-iit.fh-joanneum.at/spitzert14/MobAppDev_Android_App.git` 
+    $ git clone https://hierhold14@git-iit.fh-joanneum.at/spitzert14/MobAppDev_Android_App.git 
