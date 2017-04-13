@@ -6,7 +6,7 @@
     λ Author:   Simone Hierhold
                 Benjamin Krenn
                 Thomas Spitzer
-    λ GitLab:	https://hierhold14@git-iit.fh-joanneum.at/spitzert14/MobAppDev_Android_App.git
+    λ GitLab:	https://git-iit.fh-joanneum.at/spitzert14/MobAppDev_Android_App
 
 #1. Introduction
 
@@ -23,4 +23,4 @@
 #2. Installation
 
     Clone the repository by running:
-    $ git clone https://hierhold14@git-iit.fh-joanneum.at/spitzert14/MobAppDev_Android_App.git 
+    $ git clone https://git-iit.fh-joanneum.at/spitzert14/MobAppDev_Android_App 
