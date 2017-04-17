@@ -19,8 +19,12 @@ import java.io.IOException;
 import java.nio.BufferUnderflowException;
 
 import at.fhj.mad.catlicious.R;
+import at.fhj.mad.catlicious.service.CameraService;
+import at.fhj.mad.catlicious.service.CameraServiceImpl;
 
 import static android.app.Activity.RESULT_OK;
+import static at.fhj.mad.catlicious.utils.RequestCode.CAMERA_REQUEST;
+import static at.fhj.mad.catlicious.utils.RequestCode.GALLERY_REQUEST;
 
 /**
  * Created by Simone on 17.04.2017.
@@ -28,8 +32,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class AddAnimalFragment extends Fragment {
 
-    private static final int CAMERA_REQUEST = 1000;
-    private static final int GALLERY_REQUEST = 1001;
+    private CameraService cameraService;
+    private Fragment currentFragment;
     private ImageView imageView;
 
     public AddAnimalFragment() {
@@ -40,7 +44,10 @@ public class AddAnimalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        currentFragment = this;
         View view = inflater.inflate(R.layout.fragment_add_animal, container, false);
+
+        cameraService = new CameraServiceImpl();
 
         initListeners(view);
 
@@ -57,7 +64,7 @@ public class AddAnimalFragment extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takeImageFromCamera(v);
+                cameraService.captureImageFromCamera(currentFragment);
             }
         });
 
@@ -65,7 +72,7 @@ public class AddAnimalFragment extends Fragment {
         selectImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImageFromGallery();
+                cameraService.selectImageFromGallery(currentFragment);
             }
         });
 
@@ -93,18 +100,6 @@ public class AddAnimalFragment extends Fragment {
         }
     }
 
-    public void takeImageFromCamera(View view) {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(cameraIntent, CAMERA_REQUEST);
-    }
-
-    public void selectImageFromGallery() {
-        Intent galleryIntent = new Intent();
-        galleryIntent.setType("image/*");
-        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(galleryIntent, "select a picture"), GALLERY_REQUEST);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -112,28 +107,14 @@ public class AddAnimalFragment extends Fragment {
             //get the image from data
             Uri capturedImage = data.getData();
 
-            showImage(capturedImage);
+            cameraService.showImage(capturedImage, currentFragment, imageView);
         }
 
         if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
             //get the image from data
             Uri selectedImage = data.getData();
 
-            showImage(selectedImage);
-        }
-    }
-
-    /**
-     * reads the image from the given uri and displays it
-     * @param uri
-     */
-    public void showImage(Uri uri) {
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getApplicationContext().getContentResolver(), uri);
-
-            imageView.setImageBitmap(bitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
+            cameraService.showImage(selectedImage, currentFragment, imageView);
         }
     }
 
