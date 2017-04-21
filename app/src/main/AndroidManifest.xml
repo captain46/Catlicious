@@ -26,7 +26,7 @@
         </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyAK8-FgLHSkcyhcdcPmNtB1EhCWJjgjrbE" />
         <meta-data android:name="DATABASE" android:value="cat.db" />
         <meta-data android:name="VERSION" android:value="1" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
