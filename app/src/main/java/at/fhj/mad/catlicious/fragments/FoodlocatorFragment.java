@@ -161,10 +161,13 @@ public class FoodlocatorFragment extends Fragment implements OnMapReadyCallback 
                         double latitude = location.getDouble("lat");
                         if (place.getJSONArray("types").toString().contains("food")) {
                             places.put(locationName, new LatLng(latitude, longitude));
+                            Log.i("INTERNET", "Place with food found!:" + place.toString());
                         }
                         Log.i("INTERNET", "Returned data:" + place.toString());
                     }
 
+                } else {
+                    Log.i("INTERNET", "No food places found");
                 }
             } catch (JSONException e) {
                 Log.e("INTERNET", "Error occurred converting to JSON", e);
