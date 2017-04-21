@@ -48,7 +48,6 @@ public class FoodlocatorFragment extends Fragment implements OnMapReadyCallback 
     private MapView mapView;
     private GoogleMap map;
     private MarkerOptions options = new MarkerOptions();
-    private ArrayList<LatLng> latlngs = new ArrayList<>();
     private HashMap<String, LatLng> places = new HashMap<>();
     private LocationManager locManager;
 
@@ -154,12 +153,11 @@ public class FoodlocatorFragment extends Fragment implements OnMapReadyCallback 
                 JSONArray results = jsonObj.getJSONArray("results");
                 JSONObject place = null;
                 if (results.length() > 0) {
-                    for (int i=0; i < results.length(); i++)
-                    {
+                    for (int i = 0; i < results.length(); i++) {
                         place = results.getJSONObject(i);
                         String locationName = place.getString("name");
                         JSONObject location = place.getJSONObject("geometry").getJSONObject("location");
-                        double longitude =  location.getDouble("lng");
+                        double longitude = location.getDouble("lng");
                         double latitude = location.getDouble("lat");
                         if (place.getJSONArray("types").toString().contains("food")) {
                             places.put(locationName, new LatLng(latitude, longitude));
@@ -167,7 +165,7 @@ public class FoodlocatorFragment extends Fragment implements OnMapReadyCallback 
                         Log.i("INTERNET", "Returned data:" + place.toString());
                     }
 
-            }
+                }
             } catch (JSONException e) {
                 Log.e("INTERNET", "Error occurred converting to JSON", e);
             }
@@ -175,8 +173,8 @@ public class FoodlocatorFragment extends Fragment implements OnMapReadyCallback 
             //Add Markers
             Iterator it = places.entrySet().iterator();
             while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry)it.next();
-                options.position( (LatLng) pair.getValue());
+                Map.Entry pair = (Map.Entry) it.next();
+                options.position((LatLng) pair.getValue());
                 options.title(pair.getKey().toString());
                 options.snippet("");
                 map.addMarker(options);
