@@ -15,6 +15,7 @@ import java.util.List;
 
 import at.fhj.mad.catlicious.fragments.AddAnimalFragment;
 import at.fhj.mad.catlicious.fragments.AddFoodFragment;
+import at.fhj.mad.catlicious.fragments.FoodListFragment;
 import at.fhj.mad.catlicious.fragments.FoodlocatorFragment;
 import at.fhj.mad.catlicious.fragments.ProfilesFragment;
 import at.fhj.mad.catlicious.utils.DrawListAdapter;
@@ -39,7 +40,7 @@ public class StartScreen extends AppCompatActivity {
 
         navItems.add(new NavItem("Profiles", R.drawable.profiles));
         navItems.add(new NavItem("Add Animal",  R.drawable.add_animal));
-        navItems.add(new NavItem("Add Food", R.drawable.can));
+        navItems.add(new NavItem("Food", R.drawable.can));
         navItems.add(new NavItem("Food Locator", R.drawable.map));
 
         // DrawerLayout
@@ -79,7 +80,7 @@ public class StartScreen extends AppCompatActivity {
                 break;
             //add food
             case 2:
-                fragment = new AddFoodFragment();
+                fragment = new FoodListFragment();
                 break;
             //food locator
             case 3:
@@ -94,6 +95,7 @@ public class StartScreen extends AppCompatActivity {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.mainContent, fragment)
+                .addToBackStack(null)
                 .commit();
 
         mDrawerList.setItemChecked(position, true);
@@ -101,5 +103,14 @@ public class StartScreen extends AppCompatActivity {
 
         // Close the drawer
         mDrawerLayout.closeDrawer(mDrawerPane);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() > 0 ) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
