@@ -60,6 +60,9 @@ public class StartScreen extends AppCompatActivity {
                 selectItemFromDrawer(position);
             }
         });
+
+        // show all profiles initially
+        showProfilesFragment();
     }
 
     /*
@@ -113,5 +116,17 @@ public class StartScreen extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     * calls the fragment to show the whole profiles overview
+     */
+    public void showProfilesFragment() {
+        Fragment fragment = new ProfilesFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.mainContent, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
