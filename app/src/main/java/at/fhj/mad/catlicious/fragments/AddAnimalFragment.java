@@ -1,13 +1,11 @@
 package at.fhj.mad.catlicious.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.io.IOException;
-import java.nio.BufferUnderflowException;
-
 import at.fhj.mad.catlicious.R;
+import at.fhj.mad.catlicious.data.entity.Animal;
+import at.fhj.mad.catlicious.service.AnimalDAOService;
+import at.fhj.mad.catlicious.service.AnimalDAOServiceImpl;
 import at.fhj.mad.catlicious.service.CameraService;
 import at.fhj.mad.catlicious.service.CameraServiceImpl;
 
@@ -35,6 +33,10 @@ public class AddAnimalFragment extends Fragment {
     private CameraService cameraService;
     private Fragment currentFragment;
     private ImageView imageView;
+    private AnimalDAOService animalDAOService;
+    private Animal animal;
+    private Context context;
+    private EditText animalNameEditText;
 
     public AddAnimalFragment() {
         // Required empty public constructor
@@ -44,7 +46,11 @@ public class AddAnimalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        animalDAOService = new AnimalDAOServiceImpl();
+        animal = new Animal();
+        context = container.getContext();
         currentFragment = this;
+
         View view = inflater.inflate(R.layout.fragment_add_animal, container, false);
 
         cameraService = new CameraServiceImpl();
@@ -53,7 +59,6 @@ public class AddAnimalFragment extends Fragment {
 
         return view;
     }
-
 
     /**
      * inits the listeners for the view components
@@ -76,11 +81,11 @@ public class AddAnimalFragment extends Fragment {
             }
         });
 
-        final EditText animalName = (EditText) view.findViewById(R.id.animalName);
-        animalName.setOnClickListener(new View.OnClickListener() {
+        animalNameEditText = (EditText) view.findViewById(R.id.animalName);
+        animalNameEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearDefaultValue(animalName);
+                clearDefaultValue(animalNameEditText);
             }
         });
 
@@ -122,6 +127,11 @@ public class AddAnimalFragment extends Fragment {
      * saves the animal entity to the database
      */
     public void saveAnimal() {
-       // TODO - please implement me
+        animal.setName(animalNameEditText.getText().toString());
+        animalDAOService.addAnimal(animal, context);
+
+        // go back and show the list of all food entities
+        FragmentManager fragmentManager = getActivity().getFragmentManager();
+        fragmentManager.popBackStack();
     }
 }

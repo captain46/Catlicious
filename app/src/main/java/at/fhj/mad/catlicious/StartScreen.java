@@ -15,6 +15,7 @@ import java.util.List;
 
 import at.fhj.mad.catlicious.fragments.AddAnimalFragment;
 import at.fhj.mad.catlicious.fragments.AddFoodFragment;
+import at.fhj.mad.catlicious.fragments.AnimalListFragment;
 import at.fhj.mad.catlicious.fragments.FoodListFragment;
 import at.fhj.mad.catlicious.fragments.FoodlocatorFragment;
 import at.fhj.mad.catlicious.fragments.ProfilesFragment;
@@ -39,7 +40,7 @@ public class StartScreen extends AppCompatActivity {
         navItems = new ArrayList<>();
 
         navItems.add(new NavItem("Profiles", R.drawable.profiles));
-        navItems.add(new NavItem("Add Animal",  R.drawable.add_animal));
+        navItems.add(new NavItem("Animals",  R.drawable.add_animal));
         navItems.add(new NavItem("Food", R.drawable.can));
         navItems.add(new NavItem("Food Locator", R.drawable.map));
 
@@ -74,11 +75,11 @@ public class StartScreen extends AppCompatActivity {
             case 0:
                 fragment = new ProfilesFragment();
                 break;
-            //add animal
+            //animals
             case 1:
-                fragment = new AddAnimalFragment();
+                fragment = new AnimalListFragment();
                 break;
-            //add food
+            //food
             case 2:
                 fragment = new FoodListFragment();
                 break;

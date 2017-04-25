@@ -2,13 +2,14 @@ package at.fhj.mad.catlicious.data.entity;
 
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Simone on 22.04.2017.
  */
 
-public class Profile extends SugarRecord {
+public class Profile extends SugarRecord implements Serializable {
 
     private Animal animal;
     private List<Food> foodList;
