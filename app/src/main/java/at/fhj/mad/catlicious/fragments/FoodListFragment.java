@@ -1,10 +1,15 @@
 package at.fhj.mad.catlicious.fragments;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -75,6 +80,33 @@ public class FoodListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 callAddFoodFragment();
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
+
+                final Food food = (Food) parent.getAdapter().getItem(position);
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                alertDialog.setTitle("Delete Food");
+                alertDialog.setMessage("Do you want to delete record " + food.getBrand() + " " +food.getSort() + "?");
+                alertDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        foodDaoService.deleteFood(food, context);
+                        showAllFood();
+                    }
+                });
+                alertDialog.show();
+                return true;
             }
         });
     }

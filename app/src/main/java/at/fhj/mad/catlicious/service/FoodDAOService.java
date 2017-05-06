@@ -32,4 +32,6 @@ public interface FoodDAOService {
      * @return
      */
     List<Food> getAllFood(Context context);
+
+    void deleteFood(Food food, Context context);
 }

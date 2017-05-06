@@ -53,4 +53,29 @@ public class FoodDAOServiceImpl implements FoodDAOService {
         DAOUtils.terminateContext();
         return foodList;
     }
+
+    @Override
+    public void deleteFood(Food food, Context context) {
+        DAOUtils.createContext(context);
+
+        List<Profile> profiles = Profile.listAll(Profile.class);
+
+        for(Profile profile : profiles) {
+            List<Food> foodList = new ArrayList<>();
+            if(profile.getFoodList() != null) {
+                foodList.addAll(profile.getFoodList());
+            }
+
+            if(!foodList.isEmpty()) {
+                for(Food f : foodList) {
+                    if(f.getId().equals(food.getId())) {
+                        f.delete();
+                    }
+                }
+            }
+        }
+
+        food.delete();
+        DAOUtils.terminateContext();
+    }
 }
