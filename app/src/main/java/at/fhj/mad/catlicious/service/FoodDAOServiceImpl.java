@@ -6,6 +6,7 @@ import at.fhj.mad.catlicious.data.entity.Profile;
 import at.fhj.mad.catlicious.utils.DAOUtils;
 import at.fhj.mad.catlicious.utils.SUID;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,10 @@ public class FoodDAOServiceImpl implements FoodDAOService {
         List<Profile> profiles = Profile.listAll(Profile.class);
 
         for(Profile profile : profiles) {
-            List<Food> foodList = profile.getFoodList();
+            List<Food> foodList = new ArrayList<>();
+            if(profile.getFoodList() != null) {
+                foodList.addAll(profile.getFoodList());
+            }
             foodList.add(food);
             profile.save();
         }
