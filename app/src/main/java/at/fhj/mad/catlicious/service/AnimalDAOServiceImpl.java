@@ -56,4 +56,13 @@ public class AnimalDAOServiceImpl implements AnimalDAOService {
         DAOUtils.terminateContext();
         return animals;
     }
+
+    @Override
+    public void updateAnimal(Animal animal, Context context) {
+        DAOUtils.createContext(context);
+        Animal a = Animal.findById(Animal.class, animal.getId());
+        a.setName(animal.getName());
+        a.save();
+        DAOUtils.terminateContext();
+    }
 }

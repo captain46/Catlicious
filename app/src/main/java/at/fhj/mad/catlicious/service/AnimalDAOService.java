@@ -18,4 +18,6 @@ public interface AnimalDAOService {
     Profile getProfile(Animal animal, Context context);
 
     List<Animal> getAllAnimals(Context context);
+
+    void updateAnimal(Animal animal, Context context);
 }
