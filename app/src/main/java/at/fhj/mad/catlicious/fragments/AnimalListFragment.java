@@ -1,8 +1,10 @@
 package at.fhj.mad.catlicious.fragments;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -75,6 +77,33 @@ public class AnimalListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 callAddAnimalFragment();
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final Animal animal = (Animal) parent.getAdapter().getItem(position);
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                alertDialog.setTitle("Delete Animal");
+                alertDialog.setMessage("Do you want to delete record " + animal.getName() + "?");
+                alertDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        animalDAOService.deleteAnimal(animal, context);
+                        showAllAnimals();
+                    }
+                });
+                alertDialog.show();
+                return true;
             }
         });
     }

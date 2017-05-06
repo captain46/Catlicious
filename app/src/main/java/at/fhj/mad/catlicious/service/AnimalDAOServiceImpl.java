@@ -65,4 +65,11 @@ public class AnimalDAOServiceImpl implements AnimalDAOService {
         a.save();
         DAOUtils.terminateContext();
     }
+
+    @Override
+    public void deleteAnimal(Animal animal, Context context) {
+        DAOUtils.createContext(context);
+        animal.delete();
+        DAOUtils.terminateContext();
+    }
 }
