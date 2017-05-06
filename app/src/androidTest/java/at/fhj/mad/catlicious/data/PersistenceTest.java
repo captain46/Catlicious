@@ -3,11 +3,9 @@ package at.fhj.mad.catlicious.data;
 import android.support.test.runner.AndroidJUnit4;
 import at.fhj.mad.catlicious.data.entity.Animal;
 import at.fhj.mad.catlicious.fixture.MockApplication;
+import com.orm.SugarContext;
 import junit.framework.Assert;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
@@ -47,6 +45,11 @@ public class PersistenceTest extends MockApplication {
     @After
     public void teardown() {
         Animal.deleteAll(Animal.class);
+    }
+
+    @AfterClass
+    public void afterClass() {
+        SugarContext.terminate();
     }
 
     /**

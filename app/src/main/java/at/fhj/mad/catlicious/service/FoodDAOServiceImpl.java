@@ -1,13 +1,12 @@
 package at.fhj.mad.catlicious.service;
 
 import android.content.Context;
-
-import java.util.List;
-
 import at.fhj.mad.catlicious.data.entity.Food;
 import at.fhj.mad.catlicious.data.entity.Profile;
 import at.fhj.mad.catlicious.utils.DAOUtils;
 import at.fhj.mad.catlicious.utils.SUID;
+
+import java.util.List;
 
 /**
  * Created by Simone on 22.04.2017.
@@ -29,7 +28,7 @@ public class FoodDAOServiceImpl implements FoodDAOService {
             foodList.add(food);
             profile.save();
         }
-        DAOUtils.terminateContext(context);
+        DAOUtils.terminateContext();
     }
 
     @Override
@@ -40,14 +39,14 @@ public class FoodDAOServiceImpl implements FoodDAOService {
         f.setSort(food.getSort());
         f.setImageUri(food.getImageUri());
         f.save();
-        DAOUtils.terminateContext(context);
+        DAOUtils.terminateContext();
     }
 
     @Override
     public List<Food> getAllFood(Context context) {
         DAOUtils.createContext(context);
         List<Food> foodList = Food.listAll(Food.class);
-        DAOUtils.terminateContext(context);
+        DAOUtils.terminateContext();
         return foodList;
     }
 }

@@ -1,18 +1,15 @@
 package at.fhj.mad.catlicious.service;
 
 import android.content.Context;
-
-import com.orm.query.Condition;
-import com.orm.query.Select;
-
-import java.util.List;
-import java.util.concurrent.locks.AbstractQueuedLongSynchronizer;
-
 import at.fhj.mad.catlicious.data.entity.Animal;
 import at.fhj.mad.catlicious.data.entity.Food;
 import at.fhj.mad.catlicious.data.entity.Profile;
 import at.fhj.mad.catlicious.utils.DAOUtils;
 import at.fhj.mad.catlicious.utils.SUID;
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
+import java.util.List;
 
 /**
  * Created by Simone on 25.04.2017.
@@ -34,7 +31,7 @@ public class AnimalDAOServiceImpl implements AnimalDAOService {
         profile.setFoodList(foodList);
 
         profile.save();
-        DAOUtils.terminateContext(context);
+        DAOUtils.terminateContext();
     }
 
     @Override
@@ -48,7 +45,7 @@ public class AnimalDAOServiceImpl implements AnimalDAOService {
         //if there are more, just take the 1st one as error handling
         profile = profiles.get(0);
 
-        DAOUtils.terminateContext(context);
+        DAOUtils.terminateContext();
         return profile;
     }
 
@@ -56,7 +53,7 @@ public class AnimalDAOServiceImpl implements AnimalDAOService {
     public List<Animal> getAllAnimals(Context context) {
         DAOUtils.createContext(context);
         List<Animal> animals = Animal.listAll(Animal.class);
-        DAOUtils.terminateContext(context);
+        DAOUtils.terminateContext();
         return animals;
     }
 }

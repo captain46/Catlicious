@@ -11,13 +11,13 @@ import com.orm.SugarContext;
  * before and after each DB transaction
  */
 
-public class DAOUtils {
+public abstract class DAOUtils {
 
     public static void createContext(Context context) {
         SugarContext.init(context);
     }
 
-    public static void terminateContext(Context context) {
-        SugarContext.init(context);
+    public static void terminateContext() {
+        SugarContext.terminate();
     }
 }

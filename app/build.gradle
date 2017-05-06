@@ -22,6 +22,7 @@ android {
 }
 
 dependencies {
+    compile project(':catlicious-common')
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:support-v13:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
