@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Brand e.g. Whiskas" />
+            android:hint="Brand e.g. Whiskas" />
 
         <EditText
             android:id="@+id/sort_name"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Sort e.g. Beef" />
+            android:hint="Sort e.g. Beef" />
 
         <Button
             android:id="@+id/save_food"
