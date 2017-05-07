@@ -14,9 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.io.ByteArrayOutputStream;
-
-import at.fhj.mad.catlicious.R;
+import android.widget.Toast;
+import java.io.ByteArrayOutputStream;import at.fhj.mad.catlicious.R;
 import at.fhj.mad.catlicious.data.entity.Animal;
 import at.fhj.mad.catlicious.service.AnimalDAOService;
 import at.fhj.mad.catlicious.service.AnimalDAOServiceImpl;
@@ -98,6 +97,7 @@ public class AddAnimalFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 saveAnimal();
+                Toast.makeText(v.getContext(), "New best friend added!", Toast.LENGTH_LONG);
             }
         });
 

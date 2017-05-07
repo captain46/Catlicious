@@ -2,25 +2,22 @@ package at.fhj.mad.catlicious;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import at.fhj.mad.catlicious.fragments.AddAnimalFragment;
-import at.fhj.mad.catlicious.fragments.AddFoodFragment;
 import at.fhj.mad.catlicious.fragments.AnimalListFragment;
 import at.fhj.mad.catlicious.fragments.FoodListFragment;
 import at.fhj.mad.catlicious.fragments.FoodlocatorFragment;
 import at.fhj.mad.catlicious.fragments.ProfilesFragment;
 import at.fhj.mad.catlicious.utils.DrawListAdapter;
 import at.fhj.mad.catlicious.utils.NavItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StartScreen extends AppCompatActivity {
 
@@ -58,6 +55,8 @@ public class StartScreen extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItemFromDrawer(position);
+                findViewById(R.id.bigLogo).setVisibility(View.INVISIBLE);
+                findViewById(R.id.howToImage).setVisibility(View.INVISIBLE);
             }
         });
 
