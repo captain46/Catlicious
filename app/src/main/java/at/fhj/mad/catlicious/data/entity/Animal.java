@@ -11,6 +11,8 @@ public class Animal extends SugarRecord implements Serializable {
 
     private String name;
 
+    private byte[] image;
+
     public Animal() {}
 
     public Animal(String name) {
@@ -23,6 +25,14 @@ public class Animal extends SugarRecord implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     @Override

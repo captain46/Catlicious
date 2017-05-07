@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,12 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
+
 import at.fhj.mad.catlicious.R;
 import at.fhj.mad.catlicious.data.entity.Animal;
 import at.fhj.mad.catlicious.service.AnimalDAOService;
 import at.fhj.mad.catlicious.service.AnimalDAOServiceImpl;
 import at.fhj.mad.catlicious.service.CameraService;
 import at.fhj.mad.catlicious.service.CameraServiceImpl;
+import at.fhj.mad.catlicious.utils.ImageUtil;
 
 import static android.app.Activity.RESULT_OK;
 import static at.fhj.mad.catlicious.utils.RequestCode.CAMERA_REQUEST;
@@ -111,15 +115,22 @@ public class AddAnimalFragment extends Fragment {
         if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             //get the image from data
             Uri capturedImage = data.getData();
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(photo);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            animal.setImage(stream.toByteArray());
 
-            cameraService.showImage(capturedImage, currentFragment, imageView);
+            //cameraService.showImage(capturedImage, currentFragment, imageView);
         }
 
         if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
             //get the image from data
-            Uri selectedImage = data.getData();
-
-            cameraService.showImage(selectedImage, currentFragment, imageView);
+            Uri capturedImage = data.getData();
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(photo);
+            animal.setImage(ImageUtil.getByteFromBitmap(photo));
+            //cameraService.showImage(selectedImage, currentFragment, imageView);
         }
     }
 

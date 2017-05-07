@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class CameraServiceImpl implements CameraService {
 
             imageView.setImageBitmap(bitmap);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("CAMERA", e.getMessage(), e);
         }
     }
 }
