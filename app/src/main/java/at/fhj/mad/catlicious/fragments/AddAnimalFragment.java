@@ -1,21 +1,27 @@
 package at.fhj.mad.catlicious.fragments;
 
+import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v13.app.FragmentCompat;
+import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import android.widget.Toast;
-import java.io.ByteArrayOutputStream;import at.fhj.mad.catlicious.R;
+
+import java.io.ByteArrayOutputStream;
+
+import at.fhj.mad.catlicious.R;
 import at.fhj.mad.catlicious.data.entity.Animal;
 import at.fhj.mad.catlicious.service.AnimalDAOService;
 import at.fhj.mad.catlicious.service.AnimalDAOServiceImpl;
@@ -65,9 +71,10 @@ public class AddAnimalFragment extends Fragment {
 
     /**
      * inits the listeners for the view components
+     *
      * @param view
      */
-    public void initListeners(View view) {
+    public void initListeners(final View view) {
         imageView = (ImageView) view.findViewById(R.id.image_from_camera);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +87,13 @@ public class AddAnimalFragment extends Fragment {
         selectImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cameraService.selectImageFromGallery(currentFragment);
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    //permission not granted, request it
+                    FragmentCompat.requestPermissions(currentFragment, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            getActivity().getApplicationContext().getResources().getInteger(R.integer.PERMISSION_READ_EXT_STORAGE));
+                } else {
+                    cameraService.selectImageFromGallery(currentFragment);
+                }
             }
         });
 
@@ -104,7 +117,7 @@ public class AddAnimalFragment extends Fragment {
     }
 
     public void clearDefaultValue(EditText editText) {
-        if(editText.getText().toString().equals("Name")) {
+        if (editText.getText().toString().equals("Name")) {
             editText.setText("");
         }
     }
@@ -112,7 +125,7 @@ public class AddAnimalFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             //get the image from data
             Uri capturedImage = data.getData();
             Bitmap photo = (Bitmap) data.getExtras().get("data");
@@ -124,13 +137,21 @@ public class AddAnimalFragment extends Fragment {
             //cameraService.showImage(capturedImage, currentFragment, imageView);
         }
 
-        if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
             //get the image from data
             Uri capturedImage = data.getData();
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
             animal.setImage(ImageUtil.getByteFromBitmap(photo));
             //cameraService.showImage(selectedImage, currentFragment, imageView);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == getActivity().getApplicationContext().getResources().getInteger(R.integer.PERMISSION_READ_EXT_STORAGE)) {
+            cameraService.selectImageFromGallery(currentFragment);
         }
     }
 

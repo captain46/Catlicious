@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="PERMISSION_REQUEST_GPS">101</integer>
+    <integer name="PERMISSION_READ_EXT_STORAGE">102</integer>
 
 </resources>
