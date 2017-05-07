@@ -1,20 +1,19 @@
 package at.fhj.mad.catlicious.data.entity;
 
-import com.orm.SugarRecord;
-
-import java.io.Serializable;
-
 /**
- * Created by Simone on 22.04.2017.
+ * Created by Simone on 06.05.2017.
  */
 
-public class Profile extends SugarRecord implements Serializable {
+public class FoodRating {
 
     private Animal animal;
-    private Food food;
     private float rating;
+    private Food food;
 
-    public Profile() {
+    public FoodRating(Animal animal, float rating, Food food) {
+        this.animal = animal;
+        this.rating = rating;
+        this.food = food;
     }
 
     public Animal getAnimal() {
@@ -25,19 +24,19 @@ public class Profile extends SugarRecord implements Serializable {
         this.animal = animal;
     }
 
-    public Food getFood() {
-        return food;
-    }
-
-    public void setFood(Food food) {
-        this.food = food;
-    }
-
     public float getRating() {
         return rating;
     }
 
     public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    public Food getFood() {
+        return food;
+    }
+
+    public void setFood(Food food) {
+        this.food = food;
     }
 }

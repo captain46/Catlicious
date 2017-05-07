@@ -15,6 +15,7 @@ import java.util.List;
 
 import at.fhj.mad.catlicious.R;
 import at.fhj.mad.catlicious.data.entity.Animal;
+import at.fhj.mad.catlicious.data.entity.AnimalFoodProfile;
 import at.fhj.mad.catlicious.data.entity.Profile;
 import at.fhj.mad.catlicious.service.AnimalDAOService;
 import at.fhj.mad.catlicious.service.AnimalDAOServiceImpl;
@@ -32,7 +33,6 @@ public class ProfilesFragment extends Fragment{
     public ProfilesFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,11 +55,12 @@ public class ProfilesFragment extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Animal animal = (Animal) parent.getAdapter().getItem(position);
-                Profile profile = animalDAOService.getProfile(animal, context);
+                List<Profile> profiles = animalDAOService.getProfiles(animal, context);
+                AnimalFoodProfile animalFoodProfile = convertListToAnimalFoodProfile(profiles);
                 Fragment fragment = new SingleProfileFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("profile", profile);
+                bundle.putSerializable("animalFoodProfile", animalFoodProfile);
                 fragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = getFragmentManager();
@@ -75,5 +76,11 @@ public class ProfilesFragment extends Fragment{
         List<Animal> animalList = animalDAOService.getAllAnimals(context);
         ArrayAdapter<Animal> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, animalList);
         listView.setAdapter(arrayAdapter);
+    }
+
+    private AnimalFoodProfile convertListToAnimalFoodProfile(List<Profile> profiles) {
+        AnimalFoodProfile animalFoodProfile = new AnimalFoodProfile();
+        animalFoodProfile.setProfiles(profiles);
+        return animalFoodProfile;
     }
 }

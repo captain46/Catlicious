@@ -1,12 +1,13 @@
 package at.fhj.mad.catlicious.service;
 
 import android.content.Context;
+
+import at.fhj.mad.catlicious.data.entity.Animal;
 import at.fhj.mad.catlicious.data.entity.Food;
 import at.fhj.mad.catlicious.data.entity.Profile;
 import at.fhj.mad.catlicious.utils.DAOUtils;
 import at.fhj.mad.catlicious.utils.SUID;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,19 +20,18 @@ public class FoodDAOServiceImpl implements FoodDAOService {
     public void addFood(Food food, Context context) {
         DAOUtils.createContext(context);
         food.setId(SUID.id());
-        food.setRating(0);
         food.save();
 
-        List<Profile> profiles = Profile.listAll(Profile.class);
+        List<Animal> animals = Animal.listAll(Animal.class);
 
-        for(Profile profile : profiles) {
-            List<Food> foodList = new ArrayList<>();
-            if(profile.getFoodList() != null) {
-                foodList.addAll(profile.getFoodList());
-            }
-            foodList.add(food);
+        for(Animal animal : animals) {
+            Profile profile = new Profile();
+            profile.setId(SUID.id());
+            profile.setAnimal(animal);
+            profile.setFood(food);
             profile.save();
         }
+
         DAOUtils.terminateContext();
     }
 
@@ -61,17 +61,9 @@ public class FoodDAOServiceImpl implements FoodDAOService {
         List<Profile> profiles = Profile.listAll(Profile.class);
 
         for(Profile profile : profiles) {
-            List<Food> foodList = new ArrayList<>();
-            if(profile.getFoodList() != null) {
-                foodList.addAll(profile.getFoodList());
-            }
 
-            if(!foodList.isEmpty()) {
-                for(Food f : foodList) {
-                    if(f.getId().equals(food.getId())) {
-                        f.delete();
-                    }
-                }
+            if(profile.getFood().getId().equals(food.getId())) {
+                profile.delete();
             }
         }
 

@@ -16,7 +16,6 @@ public class Food extends SugarRecord implements Serializable {
     private String brand;
     private String sort;
     private Uri imageUri;
-    private int rating;
 
     public Food() {
     }
@@ -45,14 +44,6 @@ public class Food extends SugarRecord implements Serializable {
 
     public void setSort(String sort) {
         this.sort = sort;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
     }
 
     public Uri getImageUri() {

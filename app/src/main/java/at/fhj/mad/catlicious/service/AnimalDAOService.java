@@ -15,7 +15,9 @@ public interface AnimalDAOService {
 
     void addAnimal(Animal animal, Context context);
 
-    Profile getProfile(Animal animal, Context context);
+    List<Profile> getProfiles(Animal animal, Context context);
+
+    void updateProfile(Profile profile, Context context);
 
     List<Animal> getAllAnimals(Context context);
 
