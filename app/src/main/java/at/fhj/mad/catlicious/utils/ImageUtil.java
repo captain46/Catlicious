@@ -15,7 +15,7 @@ import java.io.IOException;
  * Created by Thomas on 07.05.2017.
  */
 
-abstract public class ImageUtil {
+public abstract class ImageUtil {
 
     public static byte[] getByteFromBitmap(Bitmap bmp) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

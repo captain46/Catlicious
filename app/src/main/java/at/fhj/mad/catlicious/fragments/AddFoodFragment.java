@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import at.fhj.mad.catlicious.R;
 import at.fhj.mad.catlicious.data.entity.Food;
 import at.fhj.mad.catlicious.service.CameraService;
@@ -113,7 +114,7 @@ public class AddFoodFragment extends Fragment {
         food.setBrand(brandEditText.getText().toString());
         food.setSort(sortEditText.getText().toString());
         foodDaoService.addFood(food, context);
-
+        Toast.makeText(context, "Yummy! Food successfully added!", Toast.LENGTH_LONG).show();
         // go back and show the list of all food entities
         FragmentManager fragmentManager = getActivity().getFragmentManager();
         fragmentManager.popBackStack();

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import at.fhj.catlicious.common.Assert;
 import at.fhj.mad.catlicious.R;
 import at.fhj.mad.catlicious.data.entity.Food;
 import at.fhj.mad.catlicious.service.CameraService;
@@ -97,8 +98,7 @@ public class EditFoodFragment extends Fragment {
     public void displayFood(Food food) {
         editBrand.setText(food.getBrand());
         editSort.setText(food.getSort());
-        if(food.getImage() != null) {
-            editImage.setImageBitmap(ImageUtil.convertByteArrayToBitmap(food.getImage()));
-        }
+        Assert.notNull(food);
+        editImage.setImageBitmap(ImageUtil.convertByteArrayToBitmap(food.getImage()));
     }
 }
