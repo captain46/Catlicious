@@ -9,8 +9,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import java.io.ByteArrayOutputStream;
-
+import at.fhj.catlicious.common.bitmap.BitmapUtils;
 import at.fhj.mad.catlicious.R;
 import at.fhj.mad.catlicious.data.entity.Animal;
 import at.fhj.mad.catlicious.service.AnimalDAOService;
@@ -28,6 +28,9 @@ import at.fhj.mad.catlicious.service.AnimalDAOServiceImpl;
 import at.fhj.mad.catlicious.service.CameraService;
 import at.fhj.mad.catlicious.service.CameraServiceImpl;
 import at.fhj.mad.catlicious.utils.ImageUtil;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 import static at.fhj.mad.catlicious.utils.RequestCode.CAMERA_REQUEST;
@@ -110,7 +113,7 @@ public class AddAnimalFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 saveAnimal();
-                Toast.makeText(v.getContext(), "New best friend added!", Toast.LENGTH_LONG);
+                Toast.makeText(v.getContext(), "New best friend added!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -139,11 +142,17 @@ public class AddAnimalFragment extends Fragment {
 
         if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
             //get the image from data
-            Uri capturedImage = data.getData();
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
-            animal.setImage(ImageUtil.getByteFromBitmap(photo));
-            //cameraService.showImage(selectedImage, currentFragment, imageView);
+            Bitmap photo = null;
+            try {
+                photo = MediaStore.Images.Media.getBitmap(this.context.getContentResolver(), data.getData());
+                Bitmap scaledPhoto = BitmapUtils.downscale(photo);
+                imageView.setAdjustViewBounds(true);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setImageBitmap(scaledPhoto);
+                animal.setImage(ImageUtil.getByteFromBitmap(scaledPhoto));
+            } catch (IOException e) {
+                Log.d("GALLERY", "Could not open image from gallery",e);
+            }
         }
     }
 
