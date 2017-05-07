@@ -4,7 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +12,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import at.fhj.mad.catlicious.R;
 import at.fhj.mad.catlicious.data.entity.Food;
 import at.fhj.mad.catlicious.service.CameraService;
 import at.fhj.mad.catlicious.service.CameraServiceImpl;
 import at.fhj.mad.catlicious.service.FoodDAOService;
 import at.fhj.mad.catlicious.service.FoodDAOServiceImpl;
+
+import java.io.ByteArrayOutputStream;
 
 import static android.app.Activity.RESULT_OK;
 import static at.fhj.mad.catlicious.utils.RequestCode.CAMERA_REQUEST;
@@ -97,9 +98,11 @@ public class AddFoodFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Uri capturedImage = data.getData();
-            food.setImageUri(capturedImage);
-            cameraService.showImage(capturedImage, currentFragment, imageView);
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            imageView.setImageBitmap(photo);
+            food.setImage(stream.toByteArray());
         }
     }
 

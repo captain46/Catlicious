@@ -41,7 +41,7 @@ public class FoodDAOServiceImpl implements FoodDAOService {
         Food f = Food.findById(Food.class, food.getId());
         f.setBrand(food.getBrand());
         f.setSort(food.getSort());
-        f.setImageUri(food.getImageUri());
+        f.setImage(food.getImage());
         f.save();
         DAOUtils.terminateContext();
     }

@@ -1,7 +1,5 @@
 package at.fhj.mad.catlicious.data.entity;
 
-import android.net.Uri;
-
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
@@ -15,7 +13,7 @@ public class Food extends SugarRecord implements Serializable {
     private Long id;
     private String brand;
     private String sort;
-    private Uri imageUri;
+    private byte[] image;
 
     public Food() {
     }
@@ -46,12 +44,12 @@ public class Food extends SugarRecord implements Serializable {
         this.sort = sort;
     }
 
-    public Uri getImageUri() {
-        return imageUri;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     @Override

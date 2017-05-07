@@ -7,12 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-import at.fhj.catlicious.common.bitmap.BitmapUtils;
 import at.fhj.mad.catlicious.R;
 import at.fhj.mad.catlicious.data.entity.Animal;
 import at.fhj.mad.catlicious.service.AnimalDAOService;
@@ -30,7 +26,6 @@ import at.fhj.mad.catlicious.service.CameraServiceImpl;
 import at.fhj.mad.catlicious.utils.ImageUtil;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 import static at.fhj.mad.catlicious.utils.RequestCode.CAMERA_REQUEST;
@@ -130,28 +125,23 @@ public class AddAnimalFragment extends Fragment {
 
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             //get the image from data
-            Uri capturedImage = data.getData();
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(photo);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
             animal.setImage(stream.toByteArray());
-
-            //cameraService.showImage(capturedImage, currentFragment, imageView);
         }
 
         if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
             //get the image from data
-            Bitmap photo = null;
-            try {
-                photo = MediaStore.Images.Media.getBitmap(this.context.getContentResolver(), data.getData());
-                Bitmap scaledPhoto = BitmapUtils.downscale(photo);
+            Bitmap photo = ImageUtil.resolveFromContentResolver(context, data.getData(), true);
+            if (photo != null) {
+                animal.setImage(ImageUtil.getByteFromBitmap(photo));
                 imageView.setAdjustViewBounds(true);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setImageBitmap(scaledPhoto);
-                animal.setImage(ImageUtil.getByteFromBitmap(scaledPhoto));
-            } catch (IOException e) {
-                Log.d("GALLERY", "Could not open image from gallery",e);
+                imageView.setImageBitmap(photo);
+            } else {
+                Toast.makeText(context, "Ooops! Image could not be read! :(", Toast.LENGTH_LONG).show();
             }
         }
     }

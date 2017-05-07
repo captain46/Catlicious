@@ -17,6 +17,7 @@ import at.fhj.mad.catlicious.service.CameraService;
 import at.fhj.mad.catlicious.service.CameraServiceImpl;
 import at.fhj.mad.catlicious.service.FoodDAOService;
 import at.fhj.mad.catlicious.service.FoodDAOServiceImpl;
+import at.fhj.mad.catlicious.utils.ImageUtil;
 
 /**
  * Created by Simone on 22.04.2017.
@@ -96,8 +97,8 @@ public class EditFoodFragment extends Fragment {
     public void displayFood(Food food) {
         editBrand.setText(food.getBrand());
         editSort.setText(food.getSort());
-        if(food.getImageUri() != null) {
-            cameraService.showImage(food.getImageUri(), currentFragment, editImage);
+        if(food.getImage() != null) {
+            editImage.setImageBitmap(ImageUtil.convertByteArrayToBitmap(food.getImage()));
         }
     }
 }
