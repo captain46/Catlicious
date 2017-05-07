@@ -76,6 +76,7 @@ public class AnimalDAOServiceImpl implements AnimalDAOService {
         DAOUtils.createContext(context);
         Animal a = Animal.findById(Animal.class, animal.getId());
         a.setName(animal.getName());
+        a.setImage(animal.getImage());
         a.save();
         DAOUtils.terminateContext();
     }

@@ -19,9 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
-import java.io.IOException;
-
+import android.widget.Toast;
 import at.fhj.mad.catlicious.R;
 import at.fhj.mad.catlicious.data.entity.Animal;
 import at.fhj.mad.catlicious.service.AnimalDAOService;
@@ -29,6 +27,9 @@ import at.fhj.mad.catlicious.service.AnimalDAOServiceImpl;
 import at.fhj.mad.catlicious.service.CameraService;
 import at.fhj.mad.catlicious.service.CameraServiceImpl;
 import at.fhj.mad.catlicious.utils.ImageUtil;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 import static at.fhj.mad.catlicious.utils.RequestCode.CAMERA_REQUEST;
@@ -75,8 +76,11 @@ public class EditAnimalFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 updateAnimal(animal);
+                Toast.makeText(context, "Okay, we've updated your best friend! :)", Toast.LENGTH_LONG).show();
             }
         });
+
+
 
         return view;
     }
@@ -88,6 +92,7 @@ public class EditAnimalFragment extends Fragment {
         editImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editImageView.setImageResource(android.R.color.transparent); //clears the image view
                 cameraService.captureImageFromCamera(currentFragment);
             }
         });
@@ -117,11 +122,11 @@ public class EditAnimalFragment extends Fragment {
 
         if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
             //get the image from data
-            Uri capturedImage = data.getData();
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             editImageView.setImageBitmap(photo);
-            animal.setImage(ImageUtil.getByteFromBitmap(photo));
-            //cameraService.showImage(capturedImage, currentFragment, imageView);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            animal.setImage(stream.toByteArray());
         }
 
         if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {

@@ -136,10 +136,12 @@ public class AddAnimalFragment extends Fragment {
             //get the image from data
             Bitmap photo = ImageUtil.resolveFromContentResolver(context, data.getData(), true);
             if (photo != null) {
-                animal.setImage(ImageUtil.getByteFromBitmap(photo));
+                imageView.setImageBitmap(photo);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.PNG, 80, stream);
+                animal.setImage(stream.toByteArray());
                 imageView.setAdjustViewBounds(true);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setImageBitmap(photo);
             } else {
                 Toast.makeText(context, "Ooops! Image could not be read! :(", Toast.LENGTH_LONG).show();
             }

@@ -24,9 +24,13 @@ public abstract class ImageUtil {
     }
 
     public static Bitmap convertByteArrayToBitmap(byte[] byteArrayToBeCOnvertedIntoBitMap) {
-        return BitmapFactory.decodeByteArray(
+        Bitmap bitmap =  BitmapFactory.decodeByteArray(
                 byteArrayToBeCOnvertedIntoBitMap, 0,
                 byteArrayToBeCOnvertedIntoBitMap.length);
+        if(bitmap == null) {
+            return Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
+        }
+        return bitmap;
 
     }
 
