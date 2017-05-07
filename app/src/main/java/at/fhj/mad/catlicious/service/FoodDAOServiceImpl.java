@@ -49,7 +49,7 @@ public class FoodDAOServiceImpl implements FoodDAOService {
     @Override
     public List<Food> getAllFood(Context context) {
         DAOUtils.createContext(context);
-        List<Food> foodList = Food.listAll(Food.class);
+        List<Food> foodList = Food.listAll(Food.class, "brand, sort");
         DAOUtils.terminateContext();
         return foodList;
     }

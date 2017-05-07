@@ -41,7 +41,8 @@ public class AnimalDAOServiceImpl implements AnimalDAOService {
         DAOUtils.createContext(context);
 
         List<Profile> profiles = Select.from(Profile.class)
-                .where(Condition.prop("animal").eq(animal)).list();
+                .where(Condition.prop("animal").eq(animal))
+                .orderBy("rating DESC").list();
 
         DAOUtils.terminateContext();
         return profiles;
@@ -65,7 +66,7 @@ public class AnimalDAOServiceImpl implements AnimalDAOService {
     @Override
     public List<Animal> getAllAnimals(Context context) {
         DAOUtils.createContext(context);
-        List<Animal> animals = Animal.listAll(Animal.class);
+        List<Animal> animals = Animal.listAll(Animal.class, "name");
         DAOUtils.terminateContext();
         return animals;
     }
