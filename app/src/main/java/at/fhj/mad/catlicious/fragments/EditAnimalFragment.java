@@ -3,16 +3,13 @@ package at.fhj.mad.catlicious.fragments;
 import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,19 +18,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import at.fhj.mad.catlicious.R;
+import at.fhj.mad.catlicious.data.Image;
+import at.fhj.mad.catlicious.data.ImageActivityRequest;
 import at.fhj.mad.catlicious.data.entity.Animal;
-import at.fhj.mad.catlicious.service.AnimalDAOService;
-import at.fhj.mad.catlicious.service.AnimalDAOServiceImpl;
-import at.fhj.mad.catlicious.service.CameraService;
-import at.fhj.mad.catlicious.service.CameraServiceImpl;
-import at.fhj.mad.catlicious.utils.ImageUtil;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import static android.app.Activity.RESULT_OK;
-import static at.fhj.mad.catlicious.utils.RequestCode.CAMERA_REQUEST;
-import static at.fhj.mad.catlicious.utils.RequestCode.GALLERY_REQUEST;
+import at.fhj.mad.catlicious.service.*;
+import at.fhj.mad.catlicious.service.exception.RequestNotSatisfiableException;
+import at.fhj.mad.catlicious.utils.ImageUtils;
 
 /**
  * Created by Simone on 26.04.2017.
@@ -81,7 +71,6 @@ public class EditAnimalFragment extends Fragment {
         });
 
 
-
         return view;
     }
 
@@ -114,36 +103,24 @@ public class EditAnimalFragment extends Fragment {
 
     public void displayAnimal(Animal animal) {
         editAnimalName.setText(animal.getName());
-        editImageView.setImageBitmap(ImageUtil.convertByteArrayToBitmap(animal.getImage()));
+        editImageView.setImageBitmap(ImageUtils.convertByteArrayToBitmap(animal.getImage()));
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
-            //get the image from data
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            editImageView.setImageBitmap(photo);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            animal.setImage(stream.toByteArray());
-        }
-
-        if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
-            //get the image from data
-            Uri capturedImage = data.getData();
-            editImageView.setImageURI(capturedImage);
-            cameraService.showImage(capturedImage, currentFragment, editImageView);
-            ContentResolver contentResolver = currentFragment.getActivity().getApplicationContext().getContentResolver();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(contentResolver, capturedImage);
-                animal.setImage(ImageUtil.getByteFromBitmap(bitmap));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        ImageActivityRequest request = new ImageActivityRequest(requestCode, resultCode, data);
+        ImageActivityRequestChainInvoker invoker = new ImageActivityRequestChainInvoker(context);
+        Image image = null;
+        try {
+            image = invoker.deliver(request);
+            editImageView.setImageBitmap(image.getBitmap());
+            animal.setImage(image.getBytes());
+        } catch (RequestNotSatisfiableException e) {
+            Log.d("CAMERA", "Request aborted by user", e);
+            editImageView.setImageBitmap(ImageUtils.convertByteArrayToBitmap(animal.getImage()));
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

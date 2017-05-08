@@ -6,7 +6,7 @@ import com.orm.SugarContext;
 
 /**
  * Created by Simone on 25.04.2017.
- *
+ * <p>
  * supports the functionality to create and destroy the context
  * before and after each DB transaction
  */

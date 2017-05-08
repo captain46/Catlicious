@@ -6,10 +6,10 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import at.fhj.mad.catlicious.R;
+import at.fhj.mad.catlicious.data.Image;
+import at.fhj.mad.catlicious.data.ImageActivityRequest;
 import at.fhj.mad.catlicious.data.entity.Animal;
-import at.fhj.mad.catlicious.service.AnimalDAOService;
-import at.fhj.mad.catlicious.service.AnimalDAOServiceImpl;
-import at.fhj.mad.catlicious.service.CameraService;
-import at.fhj.mad.catlicious.service.CameraServiceImpl;
-import at.fhj.mad.catlicious.utils.ImageUtil;
-
-import java.io.ByteArrayOutputStream;
-
-import static android.app.Activity.RESULT_OK;
-import static at.fhj.mad.catlicious.utils.RequestCode.CAMERA_REQUEST;
-import static at.fhj.mad.catlicious.utils.RequestCode.GALLERY_REQUEST;
+import at.fhj.mad.catlicious.service.*;
+import at.fhj.mad.catlicious.service.exception.RequestNotSatisfiableException;
 
 /**
  * Created by Simone on 17.04.2017.
@@ -122,30 +115,20 @@ public class AddAnimalFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            //get the image from data
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            animal.setImage(stream.toByteArray());
+        ImageActivityRequest request = new ImageActivityRequest(requestCode, resultCode, data);
+        ImageActivityRequestChainInvoker invoker = new ImageActivityRequestChainInvoker(context);
+        Image image = null;
+        try {
+            image = invoker.deliver(request);
+            animal.setImage(image.getBytes());
+            imageView.setImageBitmap(image.getBitmap());
+            imageView.setAdjustViewBounds(true);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        } catch (RequestNotSatisfiableException e) {
+            Log.d("CAMERA", "Request aborted by user", e);
         }
 
-        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
-            //get the image from data
-            Bitmap photo = ImageUtil.resolveFromContentResolver(context, data.getData(), true);
-            if (photo != null) {
-                imageView.setImageBitmap(photo);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                photo.compress(Bitmap.CompressFormat.PNG, 80, stream);
-                animal.setImage(stream.toByteArray());
-                imageView.setAdjustViewBounds(true);
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            } else {
-                Toast.makeText(context, "Ooops! Image could not be read! :(", Toast.LENGTH_LONG).show();
-            }
-        }
+
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.io.IOException;
  * Created by Thomas on 07.05.2017.
  */
 
-public abstract class ImageUtil {
+public abstract class ImageUtils {
 
     public static byte[] getByteFromBitmap(Bitmap bmp) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -24,14 +24,13 @@ public abstract class ImageUtil {
     }
 
     public static Bitmap convertByteArrayToBitmap(byte[] byteArrayToBeCOnvertedIntoBitMap) {
-        Bitmap bitmap =  BitmapFactory.decodeByteArray(
+        Bitmap bitmap = BitmapFactory.decodeByteArray(
                 byteArrayToBeCOnvertedIntoBitMap, 0,
                 byteArrayToBeCOnvertedIntoBitMap.length);
-        if(bitmap == null) {
+        if (bitmap == null) {
             return Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
         }
         return bitmap;
-
     }
 
     /**

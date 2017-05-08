@@ -24,7 +24,7 @@ public class FoodDAOServiceImpl implements FoodDAOService {
 
         List<Animal> animals = Animal.listAll(Animal.class);
 
-        for(Animal animal : animals) {
+        for (Animal animal : animals) {
             Profile profile = new Profile();
             profile.setId(SUID.id());
             profile.setAnimal(animal);
@@ -60,9 +60,9 @@ public class FoodDAOServiceImpl implements FoodDAOService {
 
         List<Profile> profiles = Profile.listAll(Profile.class);
 
-        for(Profile profile : profiles) {
+        for (Profile profile : profiles) {
 
-            if(profile.getFood().getId().equals(food.getId())) {
+            if (profile.getFood().getId().equals(food.getId())) {
                 profile.delete();
             }
         }

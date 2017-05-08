@@ -4,28 +4,23 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
+import android.widget.Toast;
 import at.fhj.catlicious.common.Assert;
 import at.fhj.mad.catlicious.R;
+import at.fhj.mad.catlicious.data.Image;
+import at.fhj.mad.catlicious.data.ImageActivityRequest;
 import at.fhj.mad.catlicious.data.entity.Food;
-import at.fhj.mad.catlicious.service.CameraService;
-import at.fhj.mad.catlicious.service.CameraServiceImpl;
-import at.fhj.mad.catlicious.service.FoodDAOService;
-import at.fhj.mad.catlicious.service.FoodDAOServiceImpl;
-import at.fhj.mad.catlicious.utils.ImageUtil;
-
-import java.io.ByteArrayOutputStream;
-
-import static android.app.Activity.RESULT_OK;
-import static at.fhj.mad.catlicious.utils.RequestCode.CAMERA_REQUEST;
+import at.fhj.mad.catlicious.service.*;
+import at.fhj.mad.catlicious.service.exception.RequestNotSatisfiableException;
+import at.fhj.mad.catlicious.utils.ImageUtils;
 
 /**
  * Created by Simone on 22.04.2017.
@@ -61,7 +56,7 @@ public class EditFoodFragment extends Fragment {
         food = (Food) bundle.getSerializable("food");
         cameraService = new CameraServiceImpl();
 
-        initFields (view);
+        initFields(view);
 
         displayFood(food);
 
@@ -70,6 +65,7 @@ public class EditFoodFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 updateFood();
+                Toast.makeText(context, "We've updated the food according to your liking.", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -85,6 +81,7 @@ public class EditFoodFragment extends Fragment {
 
     /**
      * inits the view components depending on their values
+     *
      * @param view
      */
     public void initFields(View view) {
@@ -108,23 +105,28 @@ public class EditFoodFragment extends Fragment {
 
     /**
      * shows the selected food entity in the edit menu
+     *
      * @param food
      */
     public void displayFood(Food food) {
         editBrand.setText(food.getBrand());
         editSort.setText(food.getSort());
         Assert.notNull(food);
-        editImage.setImageBitmap(ImageUtil.convertByteArrayToBitmap(food.getImage()));
+        editImage.setImageBitmap(ImageUtils.convertByteArrayToBitmap(food.getImage()));
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            editImage.setImageBitmap(photo);
-            food.setImage(stream.toByteArray());
+        ImageActivityRequest request = new ImageActivityRequest(requestCode, resultCode, data);
+        ImageActivityRequestChainInvoker invoker = new ImageActivityRequestChainInvoker(context);
+        Image image = null;
+        try {
+            image = invoker.deliver(request);
+            food.setImage(image.getBytes());
+            editImage.setImageBitmap(image.getBitmap());
+        } catch (RequestNotSatisfiableException e) {
+            Log.d("CAMERA", "Request aborted by user", e);
+            editImage.setImageBitmap(ImageUtils.convertByteArrayToBitmap(food.getImage()));
         }
     }
 }

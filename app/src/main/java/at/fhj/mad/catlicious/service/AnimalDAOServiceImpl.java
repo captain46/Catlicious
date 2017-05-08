@@ -25,7 +25,7 @@ public class AnimalDAOServiceImpl implements AnimalDAOService {
 
         List<Food> foodList = Food.listAll(Food.class);
 
-        for(Food food : foodList) {
+        for (Food food : foodList) {
             Profile profile = new Profile();
             profile.setId(SUID.id());
             profile.setAnimal(animal);
