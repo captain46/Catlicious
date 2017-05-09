@@ -2,13 +2,13 @@ package at.fhj.mad.catlicious.service;
 
 import android.content.Context;
 
+import java.util.List;
+
 import at.fhj.mad.catlicious.data.entity.Animal;
 import at.fhj.mad.catlicious.data.entity.Food;
 import at.fhj.mad.catlicious.data.entity.Profile;
 import at.fhj.mad.catlicious.utils.DAOUtils;
 import at.fhj.mad.catlicious.utils.SUID;
-
-import java.util.List;
 
 /**
  * Created by Simone on 22.04.2017.

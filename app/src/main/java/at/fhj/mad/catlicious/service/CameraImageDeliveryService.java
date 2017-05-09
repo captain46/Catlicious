@@ -2,9 +2,10 @@ package at.fhj.mad.catlicious.service;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+
 import at.fhj.catlicious.common.Assert;
-import at.fhj.mad.catlicious.data.ImageActivityRequest;
 import at.fhj.mad.catlicious.data.Image;
+import at.fhj.mad.catlicious.data.ImageActivityRequest;
 import at.fhj.mad.catlicious.service.exception.RequestNotSatisfiableException;
 import at.fhj.mad.catlicious.utils.ImageUtils;
 import at.fhj.mad.catlicious.utils.RequestCode;

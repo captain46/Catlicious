@@ -96,7 +96,7 @@ public class FoodlocatorFragment extends Fragment implements OnMapReadyCallback 
                     if (location != null) {
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
-                        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15);
+                        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 14);
                         map.animateCamera(yourLocation);
                         updateMapMarkers(location);
                     }
@@ -178,7 +178,7 @@ public class FoodlocatorFragment extends Fragment implements OnMapReadyCallback 
                 Map.Entry pair = (Map.Entry) it.next();
                 options.position((LatLng) pair.getValue());
                 options.title(pair.getKey().toString());
-                options.snippet("");
+                //options.snippet("");
                 map.addMarker(options);
                 it.remove();
             }

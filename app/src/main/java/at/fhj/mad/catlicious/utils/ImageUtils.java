@@ -6,10 +6,11 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
-import at.fhj.catlicious.common.bitmap.BitmapUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import at.fhj.catlicious.common.bitmap.BitmapUtils;
 
 /**
  * Created by Thomas on 07.05.2017.

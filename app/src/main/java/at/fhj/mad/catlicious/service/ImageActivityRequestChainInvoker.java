@@ -2,6 +2,7 @@ package at.fhj.mad.catlicious.service;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+
 import at.fhj.mad.catlicious.data.Image;
 import at.fhj.mad.catlicious.data.ImageActivityRequest;
 import at.fhj.mad.catlicious.service.exception.RequestNotSatisfiableException;

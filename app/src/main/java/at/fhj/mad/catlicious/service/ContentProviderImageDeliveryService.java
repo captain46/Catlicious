@@ -6,6 +6,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+
+import java.io.IOException;
+
 import at.fhj.catlicious.common.Assert;
 import at.fhj.catlicious.common.bitmap.BitmapUtils;
 import at.fhj.mad.catlicious.data.Image;
@@ -13,8 +16,6 @@ import at.fhj.mad.catlicious.data.ImageActivityRequest;
 import at.fhj.mad.catlicious.service.exception.ContentProviderFileNotFoundException;
 import at.fhj.mad.catlicious.service.exception.RequestNotSatisfiableException;
 import at.fhj.mad.catlicious.utils.ImageUtils;
-
-import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 import static at.fhj.mad.catlicious.utils.RequestCode.GALLERY_REQUEST;

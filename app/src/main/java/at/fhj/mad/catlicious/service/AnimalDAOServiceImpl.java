@@ -1,15 +1,17 @@
 package at.fhj.mad.catlicious.service;
 
 import android.content.Context;
+
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
+import java.util.List;
+
 import at.fhj.mad.catlicious.data.entity.Animal;
 import at.fhj.mad.catlicious.data.entity.Food;
 import at.fhj.mad.catlicious.data.entity.Profile;
 import at.fhj.mad.catlicious.utils.DAOUtils;
 import at.fhj.mad.catlicious.utils.SUID;
-import com.orm.query.Condition;
-import com.orm.query.Select;
-
-import java.util.List;
 
 /**
  * Created by Simone on 25.04.2017.

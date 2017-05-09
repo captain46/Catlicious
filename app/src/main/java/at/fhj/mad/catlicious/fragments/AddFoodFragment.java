@@ -13,11 +13,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import at.fhj.mad.catlicious.R;
 import at.fhj.mad.catlicious.data.Image;
 import at.fhj.mad.catlicious.data.ImageActivityRequest;
 import at.fhj.mad.catlicious.data.entity.Food;
-import at.fhj.mad.catlicious.service.*;
+import at.fhj.mad.catlicious.service.CameraService;
+import at.fhj.mad.catlicious.service.CameraServiceImpl;
+import at.fhj.mad.catlicious.service.FoodDAOService;
+import at.fhj.mad.catlicious.service.FoodDAOServiceImpl;
+import at.fhj.mad.catlicious.service.ImageActivityRequestChainInvoker;
 import at.fhj.mad.catlicious.service.exception.RequestNotSatisfiableException;
 
 /**
@@ -61,6 +66,7 @@ public class AddFoodFragment extends Fragment {
 
     /**
      * inits the listeners for the view components
+     *
      * @param view
      */
     private void initListeners(View view) {
@@ -83,6 +89,7 @@ public class AddFoodFragment extends Fragment {
 
     /**
      * inits the view components depending on their values
+     *
      * @param view
      */
     private void initFields(View view) {
