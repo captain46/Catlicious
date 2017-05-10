@@ -105,6 +105,7 @@ public class AddFoodFragment extends Fragment {
         try {
             image = invoker.deliver(request);
             imageView.setImageBitmap(image.getBitmap());
+            food.setImage(image.getBytes());
         } catch (RequestNotSatisfiableException e) {
             Log.d("CAMERA", "Request aborted by user", e);
         }
